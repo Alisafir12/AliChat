@@ -1,26 +1,196 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --ink: #f4efe6;
+  --ink-soft: #d7cfc2;
+  --ink-mute: #9f978a;
+  --night: #071412;
+  --forest: #0d2420;
+  --canopy: #14352f;
+  --leaf: #1f4a42;
+  --sand: #e8c39a;
+  --copper: #d0894f;
+  --copper-deep: #a86635;
+  --glow: rgba(224, 168, 98, 0.22);
+  --glass: rgba(20, 53, 47, 0.72);
+  --glass-strong: rgba(10, 30, 27, 0.88);
+  --line: rgba(232, 195, 154, 0.16);
+  --line-strong: rgba(232, 195, 154, 0.28);
+  --danger: #e08a72;
+
+  --font-display: var(--font-fraunces), "Times New Roman", serif;
+  --font-body: var(--font-ibm-plex-arabic), "Segoe UI", Tahoma, sans-serif;
+
+  --radius-sm: 12px;
+  --radius-md: 18px;
+  --radius-lg: 28px;
+  --radius-pill: 999px;
+
+  --shadow-soft: 0 20px 60px rgba(0, 0, 0, 0.35);
+  --conversation-max: 760px;
+  --sidebar-width: 300px;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-ink-mute: var(--ink-mute);
+  --color-night: var(--night);
+  --color-forest: var(--forest);
+  --color-canopy: var(--canopy);
+  --color-leaf: var(--leaf);
+  --color-sand: var(--sand);
+  --color-copper: var(--copper);
+  --color-copper-deep: var(--copper-deep);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --font-sans: var(--font-body);
+  --font-display: var(--font-display);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.6;
+  background: var(--night);
+  -webkit-font-smoothing: antialiased;
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+.app-shell {
+  position: relative;
+  isolation: isolate;
+  width: 100%;
+  min-height: 100dvh;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse 80% 55% at 15% 10%, rgba(208, 137, 79, 0.18), transparent 55%),
+    radial-gradient(ellipse 70% 50% at 90% 85%, rgba(47, 122, 108, 0.28), transparent 50%),
+    linear-gradient(165deg, #0a1c19 0%, #071412 45%, #0f2a24 100%);
+}
+
+.app-shell::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.35;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+  mix-blend-mode: soft-light;
+}
+
+.app-shell::after {
+  content: "";
+  position: absolute;
+  inset: auto -10% -20% auto;
+  width: 55vmax;
+  height: 55vmax;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(224, 168, 98, 0.12), transparent 65%);
+  animation: drift 18s ease-in-out infinite alternate;
+}
+
+.app-shell > * {
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes drift {
+  from {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  to {
+    transform: translate3d(-6%, -4%, 0) scale(1.08);
+  }
+}
+
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes soft-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(208, 137, 79, 0.25);
+  }
+  50% {
+    box-shadow: 0 0 0 10px rgba(208, 137, 79, 0);
+  }
+}
+
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.15;
+  }
+}
+
+.rise-in {
+  animation: rise-in 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.typing-cursor::after {
+  content: "▍";
+  margin-inline-start: 4px;
+  color: var(--sand);
+  animation: blink 1s step-end infinite;
+}
+
+.glass-panel {
+  background: var(--glass);
+  border: 1px solid var(--line);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  box-shadow: var(--shadow-soft);
+}
+
+.brand-mark {
+  font-family: var(--font-display);
+  letter-spacing: -0.03em;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(232, 195, 154, 0.22);
+  border-radius: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
 }
