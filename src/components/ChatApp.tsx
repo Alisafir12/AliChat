@@ -202,7 +202,7 @@ export function ChatApp() {
     streaming && lastAssistant && lastAssistant.content !== undefined;
 
   return (
-    <div className="app-shell relative flex h-dvh w-full max-w-[100vw] overflow-hidden">
+    <div className="app-shell relative flex h-dvh w-full max-w-[100vw] flex-row overflow-hidden">
       <Sidebar
         open={sidebarOpen}
         onCloseMobile={() => setSidebarOpen(false)}
@@ -213,7 +213,7 @@ export function ChatApp() {
         onDelete={handleDelete}
       />
 
-      <main className="relative flex h-full min-h-0 min-w-0 w-full flex-1 flex-col overflow-hidden">
+      <main className="relative flex h-full min-h-0 min-w-0 flex-1 flex-col overflow-hidden">
         <header className="flex h-[56px] shrink-0 items-center gap-2 border-b border-line/40 px-3 sm:h-[60px] sm:gap-3 sm:px-4">
           <IconButton
             label="فتح القائمة"
