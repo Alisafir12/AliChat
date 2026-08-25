@@ -33,8 +33,8 @@ export function Composer({ disabled, streaming, onSend, onStop }: Props) {
   useEffect(() => {
     const el = textareaRef.current;
     if (!el) return;
-    el.style.height = "0px";
-    el.style.height = `${Math.min(el.scrollHeight, 200)}px`;
+    el.style.height = "auto";
+    el.style.height = `${Math.min(Math.max(el.scrollHeight, 48), 200)}px`;
   }, [value]);
 
   async function addFiles(files: FileList | File[]) {
@@ -74,10 +74,10 @@ export function Composer({ disabled, streaming, onSend, onStop }: Props) {
   }
 
   return (
-    <div className="w-full max-w-[760px] px-3 pb-[max(1.25rem,env(safe-area-inset-bottom))] pt-2 sm:px-4">
+    <div className="mx-auto w-full max-w-[760px] px-3 pb-[max(1rem,env(safe-area-inset-bottom))] pt-2 sm:px-4">
       <form
         onSubmit={onSubmit}
-        className={`rounded-[28px] border bg-[rgba(13,36,32,0.88)] p-3 shadow-[0_18px_50px_rgba(0,0,0,0.28)] backdrop-blur-xl transition-all duration-300 ${
+        className={`w-full rounded-[22px] border bg-[rgba(13,36,32,0.92)] p-2.5 shadow-[0_18px_50px_rgba(0,0,0,0.28)] backdrop-blur-xl transition-all duration-300 sm:rounded-[28px] sm:p-3 ${
           focused
             ? "border-sand/40 shadow-[0_0_0_4px_rgba(208,137,79,0.12)]"
             : "border-line"

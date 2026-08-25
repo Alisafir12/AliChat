@@ -1,7 +1,7 @@
 "use client";
 
 import type { Conversation } from "@/lib/types";
-import { ChatBubbleIcon, CloseIcon, MenuIcon, PenIcon, SearchIcon } from "./Icons";
+import { ChatBubbleIcon, CloseIcon, PenIcon, SearchIcon } from "./Icons";
 import { IconButton } from "./IconButton";
 import { SidebarItem } from "./SidebarItem";
 
@@ -26,34 +26,35 @@ export function Sidebar({
 }: Props) {
   return (
     <>
-      {open && (
-        <button
-          type="button"
-          aria-label="إغلاق القائمة"
-          className="fixed inset-0 z-30 bg-black/55 backdrop-blur-[2px] md:hidden"
-          onClick={onCloseMobile}
-        />
-      )}
+      {/* Mobile scrim */}
+      <button
+        type="button"
+        aria-label="إغلاق القائمة"
+        className={`fixed inset-0 z-40 bg-black/60 backdrop-blur-[2px] transition-opacity md:hidden ${
+          open ? "opacity-100" : "pointer-events-none opacity-0"
+        }`}
+        onClick={onCloseMobile}
+      />
 
       <aside
-        className={`absolute inset-y-0 right-0 z-40 flex w-[min(300px,86vw)] flex-col border-l border-line bg-[rgba(10,30,27,0.92)] backdrop-blur-xl transition-transform duration-300 md:relative md:w-[300px] md:shrink-0 md:translate-x-0 ${
+        className={`fixed inset-y-0 right-0 z-50 flex h-dvh w-[min(300px,88vw)] flex-col border-l border-line bg-[rgba(10,30,27,0.97)] shadow-[-12px_0_40px_rgba(0,0,0,0.35)] backdrop-blur-xl transition-transform duration-300 ease-out md:static md:z-auto md:h-full md:w-[300px] md:shrink-0 md:translate-x-0 md:shadow-none ${
           open ? "translate-x-0" : "translate-x-full md:translate-x-0"
         }`}
       >
-        <div className="flex items-center justify-between gap-2 px-4 pb-3 pt-5">
-          <div className="flex items-center gap-2">
+        <div className="flex items-center justify-between gap-2 px-4 pb-3 pt-[max(1.25rem,env(safe-area-inset-top))]">
+          <div className="flex min-w-0 items-center gap-2">
             <IconButton label="إغلاق القائمة" className="md:hidden" onClick={onCloseMobile}>
-              <MenuIcon />
+              <CloseIcon />
             </IconButton>
-            <div>
+            <div className="min-w-0">
               <div className="brand-mark text-[22px] font-semibold leading-none text-sand">
                 سِراج
               </div>
               <div className="mt-1 text-[11px] tracking-[0.18em] text-ink-mute">SIRAJ</div>
             </div>
           </div>
-          <div className="flex items-center gap-0.5">
-            <IconButton label="بحث">
+          <div className="flex shrink-0 items-center gap-0.5">
+            <IconButton label="بحث" className="hidden sm:inline-flex">
               <SearchIcon />
             </IconButton>
             <IconButton label="محادثة جديدة" onClick={onNewChat}>
@@ -63,7 +64,12 @@ export function Sidebar({
         </div>
 
         <div className="px-3 pb-3">
-          <SidebarItem onClick={onNewChat}>
+          <SidebarItem
+            onClick={() => {
+              onNewChat();
+              onCloseMobile();
+            }}
+          >
             <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-copper/20 text-sand">
               <PenIcon size={14} />
             </span>
@@ -73,7 +79,7 @@ export function Sidebar({
 
         <div className="mx-4 h-px bg-line" />
 
-        <div className="flex-1 overflow-y-auto px-3 py-4">
+        <div className="min-h-0 flex-1 overflow-y-auto px-3 py-4">
           <p className="mb-2 px-2 text-[11px] font-medium tracking-[0.14em] text-ink-mute">
             المحادثات
           </p>
@@ -129,7 +135,7 @@ export function Sidebar({
 
         <div className="mx-4 h-px bg-line" />
 
-        <div className="flex flex-col gap-2 px-4 py-5">
+        <div className="flex flex-col gap-2 px-4 py-5 pb-[max(1.25rem,env(safe-area-inset-bottom))]">
           <p className="text-[13px] leading-relaxed text-ink-soft">
             مساحة هادئة للأسئلة، التحليل، والصور.
           </p>
